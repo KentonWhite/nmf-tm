@@ -1,0 +1,11 @@
+Package: nmf-tm
+Title: Creates a Topic Model of short texts using Non-Negative Matrix Factorization
+Version: 0.1
+Authors@R: "Kenton White <jkentonwhite@gmail.com> [aut, cre]"
+Description: Topic Modeling is usually done with Latent Dirichlet Allocation.
+    This works great for long documents but seems to fail for short documents, like Tweets.
+    In this package, Topic Modeling is implemented using Non-Negative Matrix Factorization (NMF).
+    NMF is an altnernate that produced stronger topci cohesion when each document is short.
+Depends: R (>= 3.1.2)
+License: file LICENSE
+LazyData: true

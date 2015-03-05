@@ -1,4 +1,4 @@
-Package: nmf-tm
+Package: nmftm
 Title: Creates a Topic Model of short texts using Non-Negative Matrix Factorization
 Version: 0.1
 Authors@R: "Kenton White <jkentonwhite@gmail.com> [aut, cre]"

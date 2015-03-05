@@ -1,7 +1,3 @@
-require(nmf)
-require(qdap)
-require(dplyr)
-
 topic_model <- function(ids, texts, num_topics) {
   corpus <- dataframe(id=ids, text=texts)
   extract_topics(corpus, num_topics)

@@ -7,5 +7,8 @@ Description: Topic Modeling is usually done with Latent Dirichlet Allocation.
     In this package, Topic Modeling is implemented using Non-Negative Matrix Factorization (NMF).
     NMF is an altnernate that produced stronger topci cohesion when each document is short.
 Depends: R (>= 3.1.2)
+    dplyr
+    nmf
+    qdap
 License: file LICENSE
 LazyData: true

@@ -1,12 +1,12 @@
 topic_model <- function(ids, texts, num_topics) {
-  corpus <- dataframe(id=ids, text=texts)
+  corpus <- data.frame(id=ids, text=texts)
   extract_topics(corpus, num_topics)
 }
 
 extract_topics <- function(corpus, num_topics) {
   corpus %>%
   mutate(text=clean_text(text, remove = c('http[^\\b]*\\b'))) %>%
-  with(wfm(text, id)) %>%
+  with(qdap::wfm(text, id)) %>%
   wfm_to_binary %>%
   .[row.names(.) %in% frequent_terms(., 0.1*nrow(.)),] %>%
   prune_nodes %>%
@@ -23,18 +23,18 @@ clean_text <- function(text, remove=c(), stem=TRUE) {
   tolower %>%
   gsub('@[^[:space:]]*', '', .) %>%
   gsub('^[^:\\b]:', '', .) %>%
-  str_trim %>%
+  stringr::str_trim(.) %>%
   iconv(to="ASCII//TRANSLIT") %>%
   gsub(' ̀', '', .) %>%
-  removePunctuation %>%
-  removeNumbers %>%
-  removeWords(words=c(stopwords('english'), stopwords('french'))) %>%
+  tm::removePunctuation(.) %>%
+  tm::removeNumbers(.) %>%
+  tm::removeWords(., words=c(tm::stopwords('english'), tm::stopwords('french'))) %>%
   {ifelse(rep(stem, length(text)),
-  stemmer(., warn=FALSE, capitalize=FALSE, language=c('english', 'french')),
+  qdap::stemmer(., warn=FALSE, capitalize=FALSE, language=c('english', 'french')),
   .)} %>%
   gsub("\\b[a-zA-Z0-9]{1,2}\\b", "", .) %>%
-  removeWords(words=remove) %>%
-  stripWhitespace
+  tm::removeWords(., words=remove) %>%
+  tm::stripWhitespace(.)
 }
 
 wfm_to_binary <- function(wfm) {
@@ -58,15 +58,15 @@ prune_nodes <-function(wfm) {
   wfm[, colTotals > 0]
 }
 
-nmf_topic_model <- function(texts, num_topics) {  
-  mat <- texts %>%
-  melt %>%
+nmf_topic_model <- function(wfm, num_topics) {  
+  mat <- wfm %>%
+  reshape2::melt(.) %>%
   filter(value != 0) %>%
-  select(X1, X2) %>%
+  select(Var1, Var2) %>%
   unique %>%
   table %>%
   as.data.frame.matrix
-  return(nmf(mat, num_topics, method='lee', seed='nndsvd'))
+  return(NMF::nmf(mat, num_topics, method='lee', seed='nndsvd'))
 }
 
 

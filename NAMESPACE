@@ -1,3 +1,5 @@
 export(topic_model)
 export(top_terms)
+export(top_ids)
+export(topic_texts)
 import(dplyr)

@@ -62,7 +62,7 @@ nmf_topic_model <- function(wfm, num_topics) {
   mat <- wfm %>%
   reshape2::melt(.) %>%
   filter(value != 0) %>%
-  select(Var1, Var2) %>%
+  select(1,2) %>%
   unique %>%
   table %>%
   as.data.frame.matrix

@@ -1,11 +1,11 @@
-topic_model <- function(ids, texts, num_topics) {
+topic_model <- function(ids, texts, num_topics, remove=c()) {
   corpus <- data.frame(id=ids, text=texts)
-  extract_topics(corpus, num_topics)
+  extract_topics(corpus, num_topics, remove)
 }
 
-extract_topics <- function(corpus, num_topics) {
+extract_topics <- function(corpus, num_topics, remove) {
   corpus %>%
-  mutate(text=clean_text(text, remove = c('http[^\\b]*\\b'))) %>%
+  mutate(text=clean_text(text, remove = c('http[^\\b]*\\b', remove))) %>%
   with(qdap::wfm(text, id)) %>%
   wfm_to_binary %>%
   .[row.names(.) %in% frequent_terms(., 0.1*nrow(.)),] %>%

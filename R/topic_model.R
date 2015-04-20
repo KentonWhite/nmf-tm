@@ -1,14 +1,14 @@
-topic_model <- function(ids, texts, num_topics, remove=c()) {
+topic_model <- function(ids, texts, num_topics, remove=c(), keywords_percent = 0.1) {
   corpus <- data.frame(id=ids, text=texts)
-  extract_topics(corpus, num_topics, remove)
+  extract_topics(corpus, num_topics, remove, keywords_percent)
 }
 
-extract_topics <- function(corpus, num_topics, remove) {
+extract_topics <- function(corpus, num_topics, remove, keywords_percent) {
   corpus %>%
   mutate(text=clean_text(text, remove = c('http[^\\b]*\\b', remove))) %>%
   with(qdap::wfm(text, id)) %>%
   wfm_to_binary %>%
-  .[row.names(.) %in% frequent_terms(., 0.1*nrow(.)),] %>%
+  .[row.names(.) %in% frequent_terms(., keywords_percent*nrow(.)),] %>%
   prune_nodes %>%
   nmf_topic_model(num_topics)
 }

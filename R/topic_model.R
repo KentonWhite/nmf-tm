@@ -24,7 +24,7 @@ clean_text <- function(text, remove=c(), stem=TRUE) {
   gsub('@[^[:space:]]*', '', .) %>%
   gsub('^[^:\\b]:', '', .) %>%
   stringr::str_trim(.) %>%
-  iconv(to="ASCII//TRANSLIT") %>%
+  # iconv(to="ASCII//TRANSLIT") %>%
   gsub(' ̀', '', .) %>%
   tm::removePunctuation(.) %>%
   tm::removeNumbers(.) %>%

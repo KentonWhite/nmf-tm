@@ -5,7 +5,7 @@ top_terms <- function(topics, texts) {
   mutate(Term = tm::stemCompletion(Term,
   clean_text(texts, remove = c('http[^\\b]*\\b'), stem=FALSE) %>% paste(collapse=' ') %>% strsplit(' ') %>% unlist %>% unique
   )) %>%
-  distinct(Term) %>%
+  distinct(Term, .keep_all = TRUE) %>%
   group_by(predict, score) %>%
   summarize(terms=toString(Term[1:ifelse(length(Term) < 10, length(Term), 10)])) %>%
   as.data.frame %>%
